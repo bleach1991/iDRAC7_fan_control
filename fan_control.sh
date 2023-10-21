@@ -44,19 +44,6 @@ TEMP_CPU2=$(cat /tmp/dell_temperature | grep ${TEMP_SENSOR_CPU2} | cut -d"|" -f5
 echo "--> iDRAC IP Address: ${IDRAC_IP}"
 echo "--> Current CPU Temp: ${T}"
 
-# If ambient temperature is above 35deg C enable dynamic control and exit, if below set manual control.
-if [[ ${T} -ge ${TEMP_THRESHOLD} ]]
-then
-  echo "--> Temperature is above 100deg C"
-  echo "--> Enabled dynamic fan control"
-  ipmitool -I lanplus -H ${IDRAC_IP} -U ${IDRAC_USER} -P ${IDRAC_PASSWORD} raw 0x30 0x30 0x01 0x01
-  exit 1
-else
-  echo "--> Temperature is below 100deg C"
-  echo "--> Disabled dynamic fan control"
-  ipmitool -I lanplus -H ${IDRAC_IP} -U ${IDRAC_USER} -P ${IDRAC_PASSWORD} raw 0x30 0x30 0x01 0x00
-fi
-
 # Set fan speed dependant on ambient temperature if CPU temperaturte is below 100deg C.
 # If CPU temperature between 1 and 60deg C then set fans to 10%.
 if [ "${T}" -ge 1 ] && [ "${T}" -le 59 ]
@@ -83,7 +70,7 @@ then
   ipmitool -I lanplus -H ${IDRAC_IP} -U ${IDRAC_USER} -P ${IDRAC_PASSWORD} raw 0x30 0x30 0x02 0xff $SPEED25
 
 # If CPU temperature between 90 and 99deg C then set fans to 30%
-elif [ "${T}" -ge 90 ] && [ "${T}" -le 99 ]
+elif [ "${T}" -ge 90 ]
 then
   echo "--> Setting fan speed to 30%"
   ipmitool -I lanplus -H ${IDRAC_IP} -U ${IDRAC_USER} -P ${IDRAC_PASSWORD} raw 0x30 0x30 0x02 0xff $SPEED30
