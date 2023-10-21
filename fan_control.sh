@@ -2,8 +2,8 @@
 #
 # https://github.com/brezlord/iDRAC7_fan_control
 # A simple script to control fan speeds on Dell generation 12 PowerEdge servers. 
-# If the inlet temperature is above 35deg C enable iDRAC dynamic control and exit program.
-# If inlet temp is below 35deg C set fan control to manual and set fan speed to predetermined value.
+# If the CPU temperature is above 100deg C enable iDRAC dynamic control and exit program.
+# If CPU temp is below 100deg C set fan control to manual and set fan speed to predetermined value.
 # The tower servers T320, T420 & T620 inlet temperature sensor is after the HDDs so temperature will
 # be higher than the ambient temperature.
 
@@ -42,7 +42,7 @@ TEMP_CPU2=$(cat /tmp/dell_temperature | grep ${TEMP_SENSOR_CPU2} | cut -d"|" -f5
 
 
 echo "--> iDRAC IP Address: ${IDRAC_IP}"
-echo "--> Current Inlet Temp: ${T}"
+echo "--> Current CPU Temp: ${T}"
 
 # If ambient temperature is above 35deg C enable dynamic control and exit, if below set manual control.
 if [[ ${T} -ge ${TEMP_THRESHOLD} ]]
@@ -57,7 +57,7 @@ else
   ipmitool -I lanplus -H ${IDRAC_IP} -U ${IDRAC_USER} -P ${IDRAC_PASSWORD} raw 0x30 0x30 0x01 0x00
 fi
 
-# Set fan speed dependant on ambient temperature if inlet temperaturte is below 100deg C.
+# Set fan speed dependant on ambient temperature if CPU temperaturte is below 100deg C.
 # If CPU temperature between 1 and 60deg C then set fans to 10%.
 if [ "${T}" -ge 1 ] && [ "${T}" -le 59 ]
 then
