@@ -42,7 +42,9 @@ TEMP_CPU2=$(cat /tmp/dell_temperature | grep ${TEMP_SENSOR_CPU2} | cut -d"|" -f5
 
 
 echo "--> iDRAC IP Address: ${IDRAC_IP}"
-echo "--> Current CPU Temp: ${T}"
+echo "--> Current CPU1 Temp: ${TEMP_CPU1}"
+echo "--> Current CPU2 Temp: ${TEMP_CPU2}"
+echo "--> Current Average CPU Temp: ${T}"
 
 # Set fan speed dependant on ambient temperature if CPU temperaturte is below 100deg C.
 # If CPU temperature between 1 and 60deg C then set fans to 10%.
