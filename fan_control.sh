@@ -38,7 +38,7 @@ TEMP_EXHAUST=$(cat /tmp/dell_temperature | grep ${TEMP_SENSOR_EXHAUST} | cut -d"
 TEMP_CPU1=$(cat /tmp/dell_temperature | grep ${TEMP_SENSOR_CPU1} | cut -d"|" -f5 | cut -d" " -f2)
 TEMP_CPU2=$(cat /tmp/dell_temperature | grep ${TEMP_SENSOR_CPU2} | cut -d"|" -f5 | cut -d" " -f2)
 
-((T=(TEMP_CPU1+TEMP_CPU1)/2))
+((T=(TEMP_CPU1+TEMP_CPU2)/2))
 
 
 echo "--> iDRAC IP Address: ${IDRAC_IP}"
